@@ -22,7 +22,6 @@ method = cv2.THRESH_BINARY_INV + THRESH_OTSU
 limiar, image_binary = cv2.threshold(image_filtered, 0, 255, method) # tentativa e erro
 #cv2.imshow("5 - Imagem Binarizada", image_binary)
 
-
 # FAZENDO O PROCESSO DE EROSÃO NA IMAGEM
 ee = cv2.getStructuringElement(cv2.MORPH_ELLIPSE,(3,3))
 image_erodida = cv2.erode(image_binary, ee, iterations=10) # tentativa e erro
