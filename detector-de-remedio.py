@@ -7,7 +7,7 @@ image = cv2.imread("img/remedio8.jpeg")
 
 # ALTERANDO O TAMANHO DA IMAGEM ORIGINAL
 img_resized = cv2.resize(image, None, fx=0.4, fy=0.4)
-#cv2.imshow("2 - Imagem com tamanho alterado", img_resized)
+cv2.imshow("2 - Imagem com tamanho alterado", img_resized)
 
 # ALTERANDO A COR DA IMAGEM PARA CINZA
 image_gray = cv2.cvtColor(img_resized, cv2.COLOR_BGR2GRAY)
@@ -30,21 +30,19 @@ image_erodida = cv2.erode(image_binary, ee, iterations=10) # tentativa e erro
 
 # DILATANDO A IMAGEM
 image_dilatada = cv2.dilate(image_erodida, ee, iterations=10) # tentativa e erro
-#cv2.imshow("7 - Imagem Dilatada", image_dilatada)
+cv2.imshow("7 - Imagem Dilatada", image_dilatada)
 
-# APLICANDO BORDAS FINAS NOS PONTOS DE INTERESSE
-image_contornos = cv2.Canny(image_dilatada,70,150) # tentativa e erro
-#cv2.imshow("8 - Imagem com contornos", image_contornos)
-
+# PROCURANDO CONTORNOS NA IMAGEM
 contornos, h = cv2.findContours(image_dilatada, cv2.RETR_TREE, cv2.CHAIN_APPROX_SIMPLE)
-print(f'teste: {len(contornos)-2} {len(h)}')
+print(f'teste: {len(contornos)} {len(h)}')
 
-#cv2.imshow("teste",image_contornos)
+# COLOCAR O TEXTO NA IMAGEM ORIGINAL (RESIZED)
 phrase = f'Remedios faltantes: {len(contornos)-2}'
-cv2.putText(image_contornos, phrase, (40,500), cv2.FONT_HERSHEY_SIMPLEX, 0.5, (255, 255, 255),1)
+cv2.putText(img_resized, phrase, (40,500), cv2.FONT_HERSHEY_SIMPLEX, 0.5, (255, 255, 255),1)
 
+# APLICANDO UMA LÓGICA PARA COMEÇAR A PEGAR O CONTORNO DE DENTRO DA IMAGEM
 for i in range(2, len(contornos)):
-    image_final = cv2.drawContours(image_contornos, contornos, i, (100,100,100),2)
+    image_final = cv2.drawContours(img_resized, contornos, i, (0,0,255),2)
     cv2.imshow('Final contornos', image_final)
 
 cv2.waitKey()
